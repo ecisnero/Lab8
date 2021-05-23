@@ -15,7 +15,8 @@
 
 4. What do you expect to happen if we run our puppeteer tests with the field “headless” set to true?
 
-
+    -The test will still run, but we won't see the browser UI being accessed by Puppeteer.
 
 5. What would your beforeAll callback look like if you wanted to start from the settings page before every test case?
 
+    - First you would need `import { router } from './router.js';` in the script. Second you place `router.setState('settings', false);` inside of the beforeAll callback right after the timeout.

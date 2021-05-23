@@ -12,6 +12,7 @@ describe('Basic user flow for SPA ', () => {
     expect(numEntries).toBe(10);
   });
 
+  /*
   // test 2 is given
   it('Test2: Make sure <journal-entry> elements are populated', async () => {
     let allArePopulated = true;
@@ -25,57 +26,65 @@ describe('Basic user flow for SPA ', () => {
       if (plainValue.content.length == 0) { allArePopulated = false; }
     }
     expect(allArePopulated).toBe(true);
-  }, 30000);
+  }, 30000); /*test 2 end*/
 
   it('Test3: Clicking first <journal-entry>, new URL should contain /#entry1', async () => {
     // implement test3: Clicking on the first journal entry should update the URL to contain “/#entry1”
-
+    await page.click('journal-entry');
+    const pageURL = await page.url();
+    expect(pageURL).toBe('http://127.0.0.1:5500/#entry1');
   });
 
   it('Test4: On first Entry page - checking page header title', async () => {
     // implement test4: Clicking on the first journal entry should update the header text to “Entry 1” 
-
+    const headerText = await page.$eval('h1', (e) => e.innerHTML);
+    expect(headerText).toBe('Entry 1');
   });
 
   it('Test5: On first Entry page - checking <entry-page> contents', async () => {
-    /*
-     implement test5: Clicking on the first journal entry should contain the following contents: 
-        { 
-          title: 'You like jazz?',
-          date: '4/25/2021',
-          content: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.",
-          image: {
-            src: 'https://i1.wp.com/www.thepopcornmuncher.com/wp-content/uploads/2016/11/bee-movie.jpg?resize=800%2C455',
-            alt: 'bee with sunglasses'
-          }
-        }
-      */
-
+    /*implement test5: Clicking on the first journal entry should contain the following contents: */
+    const entryContent = await page.$eval('entry-page', (e) => e.entry);
+    expect(entryContent).toEqual({ 
+      title: 'You like jazz?',
+      date: '4/25/2021',
+      content: "According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground. The bee, of course, flies anyway because bees don't care what humans think is impossible.",
+      image: {
+        src: 'https://i1.wp.com/www.thepopcornmuncher.com/wp-content/uploads/2016/11/bee-movie.jpg?resize=800%2C455',
+        alt: 'bee with sunglasses'
+      }
+    });
   }, 10000);
 
   it('Test6: On first Entry page - checking <body> element classes', async () => {
     // implement test6: Clicking on the first journal entry should update the class attribute of <body> to ‘single-entry’
-
+    const classAttribute = await page.$eval('body', (e) => e.getAttribute('class'));
+    expect(classAttribute).toBe('single-entry');
   });
 
   it('Test7: Clicking the settings icon, new URL should contain #settings', async () => {
     // implement test7: Clicking on the settings icon should update the URL to contain “/#settings”
-
+    await page.click('img')
+    const pageURL = await page.url();
+    expect(pageURL).toBe('http://127.0.0.1:5500/#settings');
   });
 
   it('Test8: On Settings page - checking page header title', async () => {
     // implement test8: Clicking on the settings icon should update the header to be “Settings”
-
+    const headerText = await page.$eval('h1', (e) => e.innerHTML);
+    expect(headerText).toBe('Settings');
   });
 
   it('Test9: On Settings page - checking <body> element classes', async () => {
     // implement test9: Clicking on the settings icon should update the class attribute of <body> to ‘settings’
-
+    const classAttribute = await page.$eval('body', (e) => e.getAttribute('class'));
+    expect(classAttribute).toBe('settings');
   });
 
-  it('Test10: Clicking the back button, new URL should be /#entry1', async() => {
+  it('Test10: Clicking the back button, new URL should be /#entry1', async () => {
     // implement test10: Clicking on the back button should update the URL to contain ‘/#entry1’
-
+    await page.goBack();
+    const headerText = await page.$eval('h1', (e) => e.innerHTML);
+    expect(headerText).toBe('Entry 1');
   });
 
   // define and implement test11: Clicking the back button once should bring the user back to the home page
@@ -103,5 +112,5 @@ describe('Basic user flow for SPA ', () => {
   // create your own test 19
 
   // create your own test 20
-  
+
 });
