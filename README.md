@@ -1,5 +1,7 @@
 # Lab8_Starter
 
+Erik Cisneros
+
 ## Check your understanding q's (FILL OUT)
 1. In your own words: Where would you fit your automated tests in your Bujo project development pipeline? (just write the letter)
 
@@ -19,4 +21,4 @@
 
 5. What would your beforeAll callback look like if you wanted to start from the settings page before every test case?
 
-    - First you would need `import { router } from './router.js';` in the script. Second you place `router.setState('settings', false);` inside of the beforeAll callback right after the timeout.
+    - You would have `page.click('img');` as the last line of code, so that the script presses the first image in the HTML file, which in our case is the settings gear icon.

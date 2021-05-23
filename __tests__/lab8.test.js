@@ -12,7 +12,6 @@ describe('Basic user flow for SPA ', () => {
     expect(numEntries).toBe(10);
   });
 
-  /*
   // test 2 is given
   it('Test2: Make sure <journal-entry> elements are populated', async () => {
     let allArePopulated = true;
@@ -96,7 +95,6 @@ describe('Basic user flow for SPA ', () => {
 
   // define and implement test12: When the user if on the homepage, the header title should be “Journal Entries”
   it('Test12: On homepage - checking header title', async () => {
-    const pageURL = await page.url();
     const headerText = await page.$eval('h1', (e) => e.innerHTML);
     expect(headerText).toBe('Journal Entries');
   });
@@ -112,8 +110,7 @@ describe('Basic user flow for SPA ', () => {
     const entries = await page.$$('journal-entry');
     const secondEntry = await entries[1];
     await secondEntry.click();
-    const pageURL = await page.url();
-    expect(pageURL).toBe('http://127.0.0.1:5500/#entry2');
+    await page.waitForTimeout(500).then(() => expect(page.url()).toBe('http://127.0.0.1:5500/#entry2'));
   });
 
   // define and implement test15: Verify the title is current when clicking on the second entry
@@ -137,11 +134,38 @@ describe('Basic user flow for SPA ', () => {
   }, 10000);
 
   // create your own test 17
+  // verify when clicking the <h1> header that it sends you to the homepage.
+  it('Test 17: Clicking <h1>, the new URL will be the default one', async () => {
+    await page.click('h1');
+    const pageURL = await page.url();
+    await page.waitForTimeout(500).then(() => expect(page.url()).toBe('http://127.0.0.1:5500/'));
+  });
 
   // create your own test 18
+  // verify when clicking on the last journal entry should update the URL to /#entry10
+  it('Test 18: clicking the last <journal-entry>, new URL should contain /#entry10', async () => {
+    const entries = await page.$$('journal-entry');
+    const secondEntry = await entries[9];
+    await secondEntry.click();
+    await page.waitForTimeout(500).then(() => expect(page.url()).toBe('http://127.0.0.1:5500/#entry10'));
+  });
 
   // create your own test 19
+  // verify when going back twice, we are back on the second journal page
+  it('Test 19: Clicking the back button twice, the header should say Entry 2', async() => {
+    await page.goBack();
+    await page.goBack();
+    await page.waitForTimeout(500);
+    const headerText = await page.$eval('h1', (e) => e.innerHTML);
+    expect(headerText).toBe('Entry 2');
+  })
 
   // create your own test 20
-
+  // verify when going forward, we are back on the home page
+  it('Test 20: Clicking the forward button, the header should say Journal Entries', async() => {
+    await page.goForward();
+    await page.waitForTimeout(500);
+    const headerText = await page.$eval('h1', (e) => e.innerHTML);
+    expect(headerText).toBe('Journal Entries');
+  })
 });
